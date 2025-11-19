@@ -6,6 +6,7 @@ const uploadRouter = require("./routes/upload");
 
 const path = require("path");
 
+require("dotenv").config({ path: path.join(__dirname, "../.env") });
 const app = express();
 const cors = require("cors");
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
@@ -18,7 +19,6 @@ app.use("/api", uploadRouter);
 
 // MongoDB 연결
 console.log("MONGO_URI:", process.env.MONGO_URI);
-
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log(" MongoDB 연결 성공"))

@@ -5,23 +5,26 @@ import { Gallery } from "./pages/Gallery";
 import Upload from "./pages/Upload";
 import Footer from "./components/Footer";
 import styled from "styled-components";
+import { LoadingProvider } from "./components/LoadingContext";
 
 function App() {
   return (
-    <PageWrapper>
-      <BrowserRouter>
-        <Header />
-        <Content>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/gallery" element={<Gallery />} />
-            <Route path="/upload" element={<Upload />} />
-            {/* 다른 페이지들 추가 예정 */}
-          </Routes>
-        </Content>
-        <Footer />
-      </BrowserRouter>
-    </PageWrapper>
+    <LoadingProvider>
+      <PageWrapper>
+        <BrowserRouter>
+          <Header />
+          <Content>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/gallery" element={<Gallery />} />
+              <Route path="/upload" element={<Upload />} />
+              {/* 다른 페이지들 추가 예정 */}
+            </Routes>
+          </Content>
+          <Footer />
+        </BrowserRouter>
+      </PageWrapper>
+    </LoadingProvider>
   );
 }
 export default App;
