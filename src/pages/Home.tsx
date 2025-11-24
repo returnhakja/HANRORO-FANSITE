@@ -1,21 +1,31 @@
 // src/pages/Home.tsx
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import styled from "styled-components";
 import Slider from "react-slick";
 import Spinner from "../components/Spinner";
-
+import { SetLists } from "../data/setList";
+import EventCalendar from "../components/EventCalendar";
 const API_KEY = process.env.REACT_APP_YOUTUBE_API_KEY;
 const CHANNEL_ID = process.env.REACT_APP_CHANNEL_ID;
 
 const Home = () => {
+  const setListRef = useRef<HTMLDivElement>(null);
+
   const [videos, setVideos] = useState<{ id: string; title: string }[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentTitle, setCurrentTitle] = useState<string>("");
   const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [activeTab, setActiveTab] = useState<"day1" | "day2">("day1");
 
   const url = `https://www.googleapis.com/youtube/v3/search?key=${API_KEY}&channelId=${CHANNEL_ID}&part=snippet&order=date&type=video&maxResults=5`;
+
+  useEffect(() => {
+    if (setListRef.current) {
+      setListRef.current.scrollTop = 0;
+    }
+  }, [activeTab]);
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -86,7 +96,7 @@ const Home = () => {
   return (
     <Container>
       <HeroSection>
-        <h1>한로로 YouTube 최신 영상</h1>
+        {/* <h1>한로로 YouTube 최신 영상</h1> */}
         <Banner>
           <Quote>"{currentTitle}”</Quote>
           {loading ? (
@@ -101,15 +111,40 @@ const Home = () => {
 
       <MainGrid>
         <LeftColumn>
-          <SectionTitle>New 앨범</SectionTitle>
-          <AlbumCard>앨범 커버 이미지</AlbumCard>
+          <SectionTitle>
+            4TH 단독콘서트 {`${`<자몽살구클럽>`}`} 셋리스트
+          </SectionTitle>
+          <TabWrapper>
+            <TabButton
+              active={activeTab === "day1"}
+              onClick={() => setActiveTab("day1")}
+            >
+              Day 1
+            </TabButton>
+            <TabButton
+              active={activeTab === "day2"}
+              onClick={() => setActiveTab("day2")}
+            >
+              Day 2
+            </TabButton>
+          </TabWrapper>
+
+          <SetlistCard ref={setListRef}>
+            {SetLists[activeTab].map((song, index) => (
+              <SetlistItem key={index}>
+                <span>
+                  <AlbumThumb src={song.albumImage} alt={song.title} />{" "}
+                  {song.title}
+                </span>
+              </SetlistItem>
+            ))}
+          </SetlistCard>
         </LeftColumn>
 
         <CenterColumn>
           <SectionTitle>일정</SectionTitle>
           <EventList>
-            <li>2025-11-22 자몽살구클럽 단독 콘서트 Day1</li>
-            <li>2025-11-23 자몽살구클럽 단독 콘서트 Day2</li>
+            <EventCalendar />
           </EventList>
         </CenterColumn>
 
@@ -250,4 +285,54 @@ const StyledIframe = styled.iframe<{ visible: boolean }>`
   border: none;
   opacity: ${(props) => (props.visible ? 1 : 0)};
   transition: opacity 0.5s ease;
+`;
+
+const TabWrapper = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const TabButton = styled.button<{ active: boolean }>`
+  padding: 0.5rem 1rem;
+  border: none;
+  border-bottom: 2px solid ${(props) => (props.active ? "#333" : "#ccc")};
+  background: none;
+  font-weight: ${(props) => (props.active ? "bold" : "normal")};
+  cursor: pointer;
+`;
+
+const SetlistItem = styled.li`
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.4;
+  &::before {
+    /* content: "🎵 "; */
+    margin-right: 0.3rem;
+  }
+`;
+
+const SetlistCard = styled.div`
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 1rem;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 3px;
+  }
+`;
+
+const AlbumThumb = styled.img`
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  object-fit: cover;
 `;

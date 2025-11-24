@@ -1,0 +1,17 @@
+.react-calendar__tile.highlight {
+  background-color: #ffcc00 !important;
+  color: #000;
+  border-radius: 30%;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.3);
+}
+
+.react-calendar__tile.no-event {
+  cursor: default;
+}
+
+.react-calendar__tile.has-event {
+  cursor: pointer;
+}
+.react-calendar__tile.no-event:hover {
+  cursor: default !important;
+}
