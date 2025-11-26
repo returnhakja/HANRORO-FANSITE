@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/HANRORO-FANSITE/static/css/main.15e5eb6b.css",
-    "main.js": "/HANRORO-FANSITE/static/js/main.72197cde.js",
+    "main.js": "/HANRORO-FANSITE/static/js/main.f2f626e3.js",
     "static/js/453.b5a17ab6.chunk.js": "/HANRORO-FANSITE/static/js/453.b5a17ab6.chunk.js",
     "static/media/MMA.png": "/HANRORO-FANSITE/static/media/MMA.c784c5c2ccb27aa838b1.png",
     "static/media/마루는강쥐.png": "/HANRORO-FANSITE/static/media/마루는강쥐.2b688848f1622e113fa4.png",
@@ -25,11 +25,11 @@
     "static/media/slick.woff": "/HANRORO-FANSITE/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/HANRORO-FANSITE/index.html",
     "main.15e5eb6b.css.map": "/HANRORO-FANSITE/static/css/main.15e5eb6b.css.map",
-    "main.72197cde.js.map": "/HANRORO-FANSITE/static/js/main.72197cde.js.map",
+    "main.f2f626e3.js.map": "/HANRORO-FANSITE/static/js/main.f2f626e3.js.map",
     "453.b5a17ab6.chunk.js.map": "/HANRORO-FANSITE/static/js/453.b5a17ab6.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.15e5eb6b.css",
-    "static/js/main.72197cde.js"
+    "static/js/main.f2f626e3.js"
   ]
 }
