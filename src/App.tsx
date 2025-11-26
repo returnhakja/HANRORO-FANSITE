@@ -15,7 +15,7 @@ function App() {
   return (
     <LoadingProvider>
       <PageWrapper>
-        <BrowserRouter>
+        <BrowserRouter basename="/HANRORO-FANSITE">
           <Header />
           <Content>
             <Routes>
