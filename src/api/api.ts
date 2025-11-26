@@ -1,6 +1,7 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/api";
+// const BASE_URL = "http://localhost:5000/api";
+const BASE_URL = "https://hanroro-fansite.onrender.com/api";
 
 // 이미지 목록 불러오기
 export const fetchImages = async () => {

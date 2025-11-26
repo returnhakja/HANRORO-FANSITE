@@ -43,9 +43,11 @@ router.post("/upload", upload.single("image"), async (req, res) => {
     });
     await image.save();
 
+    const serverUrl = `${req.protocol}://${req.get("host")}`;
+
     res.json({
       message: "업로드 성공",
-      imageUrl: `http://localhost:5000/uploads/${file.filename}`,
+      imageUrl: `${serverUrl}/uploads/${file.filename}`,
       title,
       _id: image._id,
     });
@@ -56,19 +58,20 @@ router.post("/upload", upload.single("image"), async (req, res) => {
 });
 
 /**
- *  이미지 목록 불러오기
+ * 이미지 목록 불러오기
  */
 router.get("/images", async (req, res) => {
   try {
     const images = await Image.find().sort({ createdAt: -1 });
+    const serverUrl = `${req.protocol}://${req.get("host")}`;
+
     const imageUrls = images.map((img) => ({
       _id: img._id,
       title: img.title,
       createdAt: img.createdAt,
-      imageUrl: `http://localhost:5000/uploads/${img.filename}`,
+      imageUrl: `${serverUrl}/uploads/${img.filename}`,
     }));
-    console.log(images);
-    console.log(imageUrls);
+
     res.json(imageUrls);
   } catch (err) {
     console.error("이미지 목록 오류:", err);
@@ -77,7 +80,7 @@ router.get("/images", async (req, res) => {
 });
 
 /**
- *  이미지 삭제
+ * 이미지 삭제
  */
 router.delete("/image/:id", async (req, res) => {
   try {

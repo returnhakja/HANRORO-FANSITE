@@ -20,6 +20,7 @@ function App() {
           <Content>
             <Routes>
               <Route path="/" element={<Home />} />
+              <Route path="/HANRORO-FANSITE" element={<Home />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/upload" element={<Upload />} />
               <Route path="/board" element={<Board />} />
