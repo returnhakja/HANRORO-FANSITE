@@ -249,7 +249,7 @@ const SpinnerWrapper = styled.div`
 
 const StyledSlider = styled(Slider)`
   .slick-slide {
-    display: flex !important;
+    display: block !important;
     justify-content: center;
   }
 
@@ -271,20 +271,28 @@ const VideoSlide = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 460px;
-  position: relative;
+  width: 100%;
 `;
 
 const VideoWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
   position: relative;
-  width: 700px;
-  height: 460px;
+  width: 100%;
+  max-width: 900px;
+  aspect-ratio: 16 / 9;
   border-radius: 8px;
   overflow: hidden;
+  margin: 0 auto;
+
+  @media (max-width: 1024px) {
+    max-width: 700px;
+  }
+
+  @media (max-width: 768px) {
+    max-width: 100%;
+    min-width: 320px;
+  }
 `;
+
 const Thumbnail = styled.img<{ visible: boolean }>`
   position: absolute;
   top: 0;
@@ -296,12 +304,10 @@ const Thumbnail = styled.img<{ visible: boolean }>`
   cursor: pointer;
   opacity: ${(props) => (props.visible ? 1 : 0)};
   transition: opacity 0.5s ease;
+  pointer-events: ${(props) => (props.visible ? "auto" : "none")};
 `;
 
 const StyledIframe = styled.iframe<{ visible: boolean }>`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   border: none;
