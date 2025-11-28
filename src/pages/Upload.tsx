@@ -29,11 +29,11 @@ const Upload = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!title || !file) return alert("제목과 이미지를 모두 입력해주세요.");
-
+    console.log(title);
     const formData = new FormData();
     formData.append("image", file);
     formData.append("title", title);
-
+    console.log(formData);
     setLoading(true);
     try {
       const data = await uploadImage(formData);

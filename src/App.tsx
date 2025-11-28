@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Header from "./components/Header";
 import { Gallery } from "./pages/Gallery";
@@ -15,23 +15,21 @@ function App() {
   return (
     <LoadingProvider>
       <PageWrapper>
-        <BrowserRouter basename="/HANRORO-FANSITE">
+        <HashRouter>
           <Header />
           <Content>
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/HANRORO-FANSITE" element={<Home />} />
               <Route path="/gallery" element={<Gallery />} />
               <Route path="/upload" element={<Upload />} />
               <Route path="/board" element={<Board />} />
-              <Route path="board/write" element={<BoardWrite />} />
+              <Route path="/board/write" element={<BoardWrite />} />
               <Route path="/board/:id" element={<BoardDetail />} />
               <Route path="/profile" element={<ArtistProfile />} />
-              {/* 다른 페이지들 추가 예정 */}
             </Routes>
           </Content>
           <Footer />
-        </BrowserRouter>
+        </HashRouter>
       </PageWrapper>
     </LoadingProvider>
   );

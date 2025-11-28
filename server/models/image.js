@@ -1,13 +1,24 @@
+// const mongoose = require("mongoose");
+
+// const ImageSchema = new mongoose.Schema({
+//   title: String,
+//   filename: String,
+//   createdAt: {
+//     type: Date,
+//     default: Date.now,
+//     timeStamp: true,
+//   },
+// });
+
+// module.exports = mongoose.model("Image", ImageSchema);
+// server/models/Image.js
 const mongoose = require("mongoose");
 
-const ImageSchema = new mongoose.Schema({
-  title: String,
-  filename: String,
-  createdAt: {
-    type: Date,
-    default: Date.now,
-    timeStamp: true,
-  },
+const imageSchema = new mongoose.Schema({
+  title: { type: String, required: true },
+  filename: { type: String, required: true },
+  imageUrl: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now },
 });
 
-module.exports = mongoose.model("Image", ImageSchema);
+module.exports = mongoose.model("Image", imageSchema);

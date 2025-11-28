@@ -8,7 +8,7 @@ const cors = require("cors");
 
 // 환경변수 로드 (Render에서는 웹에서 입력한 값 사용)
 require("dotenv").config();
-
+require("./firebase");
 const app = express();
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));

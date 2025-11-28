@@ -1,58 +1,56 @@
 const express = require("express");
 const multer = require("multer");
-const path = require("path");
-const fs = require("fs");
+const { bucket } = require("../firebase");
 const Image = require("../models/image");
 
 const router = express.Router();
 
-// uploads 폴더가 없으면 생성
-const uploadPath = path.join(__dirname, "../uploads");
-if (!fs.existsSync(uploadPath)) {
-  fs.mkdirSync(uploadPath);
-}
-
-// multer 저장 설정 (한글 파일명 안전 처리 포함)
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    const base = path.basename(file.originalname, ext);
-    const safeBase = base.replace(/[^a-zA-Z0-9]/g, "_");
-    const uniqueName = Date.now() + "-" + safeBase + ext;
-    cb(null, uniqueName);
-  },
-});
-const upload = multer({ storage });
+// multer 설정: 메모리 저장 (파일을 바로 Firebase로 넘김)
+const upload = multer({ storage: multer.memoryStorage() });
 
 /**
- * 이미지 업로드 + DB 저장
+ * 이미지 업로드 + Firebase Storage 저장 + DB 저장
  */
 router.post("/upload", upload.single("image"), async (req, res) => {
   const { title } = req.body;
   const file = req.file;
 
   if (!file || !title) return res.status(400).send("제목과 파일이 필요함");
-
+  console.log(title);
+  console.log(file);
   try {
+    const ext = file.originalname.split(".").pop();
+    const safeBase = file.originalname.replace(/[^a-zA-Z0-9]/g, "_");
+    const filename = `gallery/${Date.now()}-${safeBase}.${ext}`;
+
+    // Firebase Storage에 저장
+    const fileRef = bucket.file(filename);
+    await fileRef.save(file.buffer, {
+      contentType: file.mimetype,
+      metadata: { contentType: file.mimetype },
+      resumable: false,
+    });
+
+    // 공개 URL 만들기
+    await fileRef.makePublic();
+    const imageUrl = `https://storage.googleapis.com/${bucket.name}/${filename}`;
+
+    // MongoDB에 저장
     const image = new Image({
       title,
-      filename: file.filename,
+      filename,
+      imageUrl,
     });
     await image.save();
 
-    const serverUrl = `${req.protocol}://${req.get("host")}`;
-
     res.json({
       message: "업로드 성공",
-      imageUrl: `${serverUrl}/uploads/${file.filename}`,
+      imageUrl,
       title,
       _id: image._id,
     });
   } catch (err) {
-    console.error("DB 저장 오류:", err);
+    console.error("업로드 오류:", err);
     res.status(500).send("서버 오류");
   }
 });
@@ -63,13 +61,12 @@ router.post("/upload", upload.single("image"), async (req, res) => {
 router.get("/images", async (req, res) => {
   try {
     const images = await Image.find().sort({ createdAt: -1 });
-    const serverUrl = `${req.protocol}://${req.get("host")}`;
 
     const imageUrls = images.map((img) => ({
       _id: img._id,
       title: img.title,
       createdAt: img.createdAt,
-      imageUrl: `${serverUrl}/uploads/${img.filename}`,
+      imageUrl: img.imageUrl,
     }));
 
     res.json(imageUrls);
@@ -87,9 +84,10 @@ router.delete("/image/:id", async (req, res) => {
     const image = await Image.findByIdAndDelete(req.params.id);
     if (!image) return res.status(404).send("이미지를 찾을 수 없음");
 
-    const filePath = path.join(__dirname, "../uploads", image.filename);
-    fs.unlink(filePath, (err) => {
-      if (err) console.error("파일 삭제 실패:", err);
+    // Firebase Storage에서 삭제
+    const fileRef = bucket.file(image.filename);
+    await fileRef.delete().catch((err) => {
+      console.error("Storage 파일 삭제 실패:", err);
     });
 
     res.json({ message: "삭제 완료" });
