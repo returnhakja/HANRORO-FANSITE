@@ -57,6 +57,7 @@ export const BoardWrite = () => {
             value={author}
             onChange={(e) => setAuthor(e.target.value)}
             style={{ width: "100%", padding: "0.5rem" }}
+            maxLength={10}
           />
         </div>
 

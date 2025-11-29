@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { fetchBoard } from "../api/api";
 import { formatDateTime } from "../utils/dataFormat";
 import styled from "styled-components";
+import Spinner from "../components/Spinner";
 
 interface Post {
   _id: string;
@@ -57,6 +58,7 @@ export const Board = () => {
   ];
   const navigate = useNavigate();
   console.log(posts);
+  if (pending) return <Spinner />;
   return (
     <div style={{ maxWidth: "900px", margin: "0 auto" }}>
       <h2>📋 커뮤니티 게시판</h2>

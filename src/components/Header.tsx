@@ -1,17 +1,19 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import LogoImg from "../assets/로고딩.svg";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <HeaderContainer>
-      <Logo to={"/"}>HANRORO</Logo>
+      <LogoLink to="/">
+        <LogoImage src={LogoImg} alt="HANRORO Logo" />
+      </LogoLink>
 
       <Hamburger onClick={() => setMenuOpen(true)}>☰</Hamburger>
 
-      {/* 오버레이 */}
       {menuOpen && <Overlay onClick={() => setMenuOpen(false)} />}
 
       <Nav open={menuOpen}>
@@ -22,20 +24,20 @@ const Header = () => {
         <NavItem to="/board" onClick={() => setMenuOpen(false)}>
           Board
         </NavItem>
-        <NavItem to="/support" onClick={() => setMenuOpen(false)}>
+        {/* <NavItem to="/support" onClick={() => setMenuOpen(false)}>
           Support
         </NavItem>
         <NavItem to="/archive" onClick={() => setMenuOpen(false)}>
           Archive
-        </NavItem>
+        </NavItem> */}
         <NavItem to="/profile" onClick={() => setMenuOpen(false)}>
           Profile
         </NavItem>
       </Nav>
 
       <Auth>
-        <AuthButton to="/login">Login</AuthButton>
-        <AuthButton to="/signup">Sign Up</AuthButton>
+        {/* <AuthButton to="/login">Login</AuthButton> */}
+        {/* <AuthButton to="/signup">Sign Up</AuthButton> */}
       </Auth>
     </HeaderContainer>
   );
@@ -51,11 +53,15 @@ const HeaderContainer = styled.header`
   position: relative;
 `;
 
-const Logo = styled(Link)`
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #6a4c93;
+const LogoLink = styled(Link)`
+  display: inline-block;
   text-decoration: none;
+`;
+
+const LogoImage = styled.img`
+  height: 40px;
+  width: auto;
+  display: block;
 `;
 
 const Hamburger = styled.div`
