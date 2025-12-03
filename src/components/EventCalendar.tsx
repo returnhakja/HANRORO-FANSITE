@@ -31,16 +31,12 @@ const EventCalendar = () => {
         onRequestClose={() => setSelectedEvent(null)}
         contentLabel="Event Details"
         style={{
-          content: {
-            position: "relative",
-            width: "500px",
-            height: "900px",
-            margin: "auto",
-            borderRadius: "12px",
-            padding: "1.5rem",
-          },
           overlay: {
             backgroundColor: "rgba(0,0,0,0.5)",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            zIndex: 2,
           },
         }}
       >

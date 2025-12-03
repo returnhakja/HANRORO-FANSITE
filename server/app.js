@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const uploadRouter = require("./routes/upload"); // 갤러리
 const boardRouter = require("./routes/boardApi"); // 게시판
 const youtubeRouter = require("./routes/youTube");
+const imagesRouter = require("./routes/images");
+
 const path = require("path");
 const cors = require("cors");
 
@@ -35,6 +37,7 @@ app.use(express.json());
 app.use("/api", uploadRouter);
 app.use("/api/board", boardRouter);
 app.use("/api/youtube", youtubeRouter);
+app.use("/api", imagesRouter);
 
 // MongoDB 연결
 console.log("MONGODB_URI:", process.env.MONGODB_URI);

@@ -10,6 +10,9 @@ import { Board } from "./pages/Board";
 import { BoardWrite } from "./pages/BoardWrite";
 import { BoardDetail } from "./pages/BoardDetail";
 import { ArtistProfile } from "./pages/ArtistProfile";
+import Modal from "react-modal";
+
+Modal.setAppElement("#root");
 
 function App() {
   return (

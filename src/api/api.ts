@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL =
+export const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://hanroro-fansite.onrender.com/api"
     : "http://localhost:5000/api";
@@ -58,5 +58,10 @@ export const getBoardById = async (id: string | undefined) => {
 // 게시글 좋아요
 export const likeBoard = async (id: string | undefined) => {
   const res = await axios.post(`${BASE_URL}/board/${id}/like`);
+  return res.data;
+};
+
+export const fetchRandomImage = async () => {
+  const res = await axios.get(`${BASE_URL}/images/random`);
   return res.data;
 };
